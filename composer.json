@@ -1,11 +1,13 @@
 {
-    "name": "halpdesk/minimum-package",
-    "description": "Bare minimum to aid building composer packages for Laravel framework",
-    "keywords": ["halpdesk", "laravel", "composer", "php"],
+    "name": "halpdesk/laravel-traits",
+    "description": "Package with useful laravel traits",
+    "keywords": ["laravel", "traits", "snake_case", "filter", "transformers"],
     "type": "library",
     "require": {
         "php": ">=7.3.4",
-        "laravel/framework": "5.8.*"
+        "laravel/framework": "5.8.*",
+        "league/fractal": "^0.18.0",
+        "halpdesk/helpers": "*"
     },
     "require-dev": {
         "phpunit/phpunit": "^7.0",
@@ -16,8 +18,8 @@
     },
     "autoload": {
         "psr-4": {
-            "Halpdesk\\LaravelMinimumPackage\\": "src/",
-            "Halpdesk\\LaravelMinimumPackage\\Tests\\": "tests/"
+            "Halpdesk\\LaravelTraits\\": "src/",
+            "Halpdesk\\LaravelTraits\\Tests\\": "tests/"
         },
         "files": [
         ],

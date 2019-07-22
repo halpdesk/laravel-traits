@@ -1,20 +1,9 @@
-# This package: minimum-package
+# Laravel Traits
 
-This project is a bare minimum to aid building composer packages for Laravel framework
+Package with useful laravel traits
 
-## Author
+By halpdesk, 2019-07-18
 
-Halpdesk
+## Installation
 
-## To test with docker
-
-Clone the **php-projects-docker** project and move it to the same level as the root folder of this project.
-
-If your current working directory is this folder, run:
-
-```sh
-    cd ..
-    git clone git@github.com:halpdesk/php-projects-docker.git
-```
-
-To run all the tests, run `./test.run`
+`composer require halpdesk/laravel-traits`
