@@ -1,7 +1,7 @@
 {
     "name": "halpdesk/laravel-traits",
     "description": "Package with useful laravel traits",
-    "keywords": ["laravel", "traits", "snake_case", "filter", "transformers"],
+    "keywords": ["laravel", "traits", "camel", "filter", "transformers"],
     "type": "library",
     "require": {
         "php": ">=7.3.4",
