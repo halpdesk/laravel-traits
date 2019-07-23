@@ -23,6 +23,21 @@ class CamelCaseAccessibleTest extends TestCase
 
     /**
      * @group CamelCaseAccessible
+     * @covers Halpdesk\LaravelTraits\Traits\CamelCaseAccessibleTest::getAttribute()
+     */
+    public function testGetTimestamps()
+    {
+        $company = factory(Company::class)->create([
+            'company_name'  => 'My New Company',
+            'email'         => 'hello@example.com',
+        ]);
+        $this->assertEquals($company->createdAt, $company->created_at);
+        $this->assertEquals($company->updatedAt, $company->updated_at);
+        $this->assertEquals($company->deletedAt, $company->deleted_at);
+    }
+
+    /**
+     * @group CamelCaseAccessible
      * @covers Halpdesk\LaravelTraits\Traits\CamelCaseAccessibleTest::setAttribute()
      */
     public function testSetAttribute()
