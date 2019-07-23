@@ -3,10 +3,11 @@
 namespace Halpdesk\LaravelTraits\Tests\Models;
 
 use Halpdesk\LaravelTraits\BaseModel;
+use Halpdesk\LaravelTraits\Tests\Transformers\OrderTransformer;
 
 class Order extends BaseModel
 {
-    protected $transformer = Order::class;
+    protected $transformer = OrderTransformer::class;
     protected $fillable = [
         "id",
         "company_id",

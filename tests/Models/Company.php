@@ -3,7 +3,7 @@
 namespace Halpdesk\LaravelTraits\Tests\Models;
 
 use Halpdesk\LaravelTraits\BaseModel;
-use Halpdesk\LaravelTraits\Transformers\CompanyTransformer;
+use Halpdesk\LaravelTraits\Tests\Transformers\CompanyTransformer;
 
 class Company extends BaseModel
 {
@@ -15,13 +15,15 @@ class Company extends BaseModel
         "registered_at",
     ];
 
-    // protected $casts = [
-    //     "registered_at" => "datetime:Y-m-d"
-    // ];
+    protected $casts = [
+        "registered_at" => "datetime:Y-m-d"
+    ];
 
     protected $dates = [
         "registered_at"
     ];
+
+    public $timestamps = false;
 
     public function orders()
     {

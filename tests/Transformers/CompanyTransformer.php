@@ -1,6 +1,6 @@
 <?php
 
-namespace Halpdesk\LaravelTraits\Transformers;
+namespace Halpdesk\LaravelTraits\Tests\Transformers;
 
 use League\Fractal\TransformerAbstract;
 use Halpdesk\LaravelTraits\Tests\Models\Company;
@@ -8,15 +8,22 @@ use Halpdesk\LaravelTraits\Tests\Models\Company;
 class CompanyTransformer extends TransformerAbstract
 {
 
-    public $availableIncludes = [];
+    public $availableIncludes = ["orders"];
 
     public function transform(Company $company)
     {
         return [
-            "id"            => (int)$company->id,
-            "company_name"  => $company->companyName,
-            "email"         => $company->email,
-            "registered_at" => $company->registeredAt->format("Y-m-d"),
+            "id"           => (int)$company->id,
+            "companyName"  => $company->company_name,
+            "email"        => $company->email,
+            "registeredAt" => $company->registeredAt->format("Y-m-d"),
         ];
+    }
+
+    public function includeOrders(Company $company)
+    {
+        return $company->relationLoaded('orders')
+            ? $this->collection($company->orders, new OrderTransformer)
+            : null;
     }
 }
