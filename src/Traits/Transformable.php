@@ -98,7 +98,7 @@ trait Transformable
         }
 
         if (!in_array($includes, static::$relationships)) {
-            static::$relationships[static::class] = array_merge(static::$relationships[static::class], $includes);
+            static::$relationships[static::class] = array_merge(static::$relationships[static::class] ?? [], $includes);
         }
     }
 
