@@ -12,10 +12,10 @@ trait CamelCaseAccessible
     public function getAttribute($key)
     {
         $snakeCasedKey = snake_case($key);
-        $attributesAndDates = array_merge(["created_at", "updated_at", "deleted_at"], $this->getDates(), array_keys(array_keys_to_snake_case($this->attributesToArray())));
+        $attributes = $this->getAllAttributes();
 
         if (!method_exists($this, $key)) {
-            if ($key == "id" || in_array(snake_case($key), $attributesAndDates)) {
+            if ($key == "id" || in_array(snake_case($key), $attributes)) {
                 return parent::getAttribute(snake_case($key));
             } else {
                 throw new AttributeNotFoundException("attribute_not_found", get_class($this), $key, []);
@@ -40,5 +40,19 @@ trait CamelCaseAccessible
             }
         }
         return parent::fill(array_keys_to_snake_case($attributes));
+    }
+
+    protected function getAllAttributes()
+    {
+        $fillable = $this->getFillable();
+        $dates = array_merge($this->getDates(), ["deleted_at", "created_at", "updated_at"]);
+        $casts = $this->getCasts();
+
+        return array_unique(array_keys_to_snake_case(array_merge(
+            $fillable,
+            $dates,
+            array_keys($casts),
+            array_keys($this->attributesToArray()),
+        )));
     }
 }
