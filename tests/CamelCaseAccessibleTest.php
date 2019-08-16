@@ -63,7 +63,7 @@ class CamelCaseAccessibleTest extends TestCase
         $attributes = [
             'companyName'  => 'My New Company',
             'email'        => 'hello@example.com',
-            'registeredAt' => Carbon::now()->format('Y-m-d H:i:s')
+            'registeredAt' => Carbon::now()->format("Y-m-d")
         ];
         $company = (new Company)->fill($attributes);
         $company->save();
@@ -74,10 +74,10 @@ class CamelCaseAccessibleTest extends TestCase
     /**
      * @group CamelCaseAccessible
      * @covers Halpdesk\LaravelTraits\Traits\CamelCaseAccessibleTest::fill()
+     * @covers Halpdesk\LaravelTraits\Traits\CamelCaseAccessibleTest::getAttribute()
      */
     public function testDateFormat()
     {
-        $this->markTestSkipped();
         $now = Carbon::now();
         $attributes = [
             'companyName'  => 'My New Company',
@@ -87,6 +87,28 @@ class CamelCaseAccessibleTest extends TestCase
         $company = (new Company)->fill($attributes);
         $company->save();
 
-        $this->assertEquals($now->format('Y-m-d'), (string)$company->registeredAt);
+        $this->assertEquals($now->format('Y-m-d'), $company->toArray()["registeredAt"]);
+    }
+
+    /**
+     * @group CamelCaseAccessible
+     * @covers Halpdesk\LaravelTraits\Traits\CamelCaseAccessibleTest::fill()
+     * @covers Halpdesk\LaravelTraits\Traits\CamelCaseAccessibleTest::getAttribute()
+     */
+    public function testMutator()
+    {
+        $now = Carbon::now();
+        $attributes = [
+            'companyName'  => 'My New Company',
+            'email'        => 'HELLO@EXAMPLE.COM',
+            'registeredAt' => $now
+        ];
+        $company = (new Company)->fill($attributes);
+        $company->save();
+        $this->assertDatabaseHas('companies', [
+            'email'        => 'HELLO@EXAMPLE.COM',
+        ]);
+
+        $this->assertEquals($company->email, $company->getEmailAttribute($company->email));
     }
 }

@@ -15,7 +15,7 @@ trait CamelCaseAccessible
         $attributes = $this->getAllAttributes();
 
         if (!method_exists($this, $key)) {
-            if ($key == "id" || in_array(snake_case($key), $attributes)) {
+            if (in_array(snake_case($key), $attributes)) {
                 return parent::getAttribute(snake_case($key));
             } else {
                 throw new AttributeNotFoundException("attribute_not_found", get_class($this), $key, []);
@@ -42,17 +42,36 @@ trait CamelCaseAccessible
         return parent::fill(array_keys_to_snake_case($attributes));
     }
 
+    public function attributesToArray()
+    {
+        $attributes = parent::attributesToArray();
+        return $attributes + array_keys_to_camel_case($attributes);
+    }
+
+    protected function getAllDates()
+    {
+        $datesAsValues = $this->getDates();
+        foreach ($datesAsValues as $key => $date) {
+            if (is_string($key)) {
+                unset($datesAsValues[$key]);
+                $datesAsValues[] = $key;
+            }
+        }
+        return array_merge($datesAsValues, $this->timestamps ? ["deleted_at", "created_at", "updated_at"] : []);
+    }
+
     protected function getAllAttributes()
     {
         $fillable = $this->getFillable();
-        $dates = array_merge($this->getDates(), ["deleted_at", "created_at", "updated_at"]);
         $casts = $this->getCasts();
+        $dates = $this->getAllDates();
 
         return array_unique(array_keys_to_snake_case(array_merge(
+            ["id"],
             $fillable,
             $dates,
             array_keys($casts),
-            array_keys($this->attributesToArray()),
+            array_keys(parent::attributesToArray()),
         )));
     }
 }

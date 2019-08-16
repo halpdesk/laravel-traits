@@ -16,14 +16,19 @@ class Company extends BaseModel
     ];
 
     protected $casts = [
+        "company_name"  => "string",
+        "email"         => "string",
         "registered_at" => "datetime:Y-m-d"
     ];
-
     protected $dates = [
         "registered_at"
     ];
+    protected $dateFormat = "Y-m-d";
 
-    public $timestamps = false;
+    public function getEmailAttribute($value)
+    {
+        return strtolower($value);
+    }
 
     public function orders()
     {
