@@ -5,12 +5,15 @@ namespace Halpdesk\LaravelTraits\Tests;
 use Orchestra\Testbench\TestCase as OrchestraTestCase;
 use Illuminate\Support\Facades\Config;
 use Absolute\DotEnvManipulator\Libs\DotEnv;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 /**
  * @author Daniel Leppänen
  */
 class TestCase extends OrchestraTestCase
 {
+    use RefreshDatabase;
+
     /**
      * @param String    The full path to the root of this project
      */
@@ -25,13 +28,12 @@ class TestCase extends OrchestraTestCase
         $this->initialize();
         $this->getEnvironmentSetUp($this->app);
 
-        // Migrate and seed
+        // Migrate
         $this->loadMigrationsFrom([
             '--database' => 'testing',
             '--path' => static::$dir . '/tests/database/migrations',
         ]);
         $this->withFactories(static::$dir . '/tests/database/factories');
-        // $this->seed();
     }
 
     public static function setUpBeforeClass()
