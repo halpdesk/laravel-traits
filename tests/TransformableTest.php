@@ -59,10 +59,12 @@ class TransformableTest extends TestCase
         $order->load(['company']);
         $company->load(['orders']);
 
-        $this->assertEquals(['orders'], $company->getRelationTableNames());
-        $this->assertEquals(['companies'], $order->getRelationTableNames());
         $this->assertEquals(['orders'], $company->getIncludes());
-        $this->assertEquals(['company'], $order->getIncludes());
+        $this->assertEquals(['products', 'company'], $order->getIncludes());
+
+        $this->assertEquals(['orders'], $company->getRelationTableNames());
+        $this->assertEquals(['products', 'companies'], $order->getRelationTableNames());
+
         $this->assertTrue($company->relationLoaded('orders'));
         $this->assertTrue($order->relationLoaded('company'));
         $this->assertFalse($company->relationLoaded('notLoaded'));

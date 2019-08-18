@@ -7,8 +7,7 @@ use Halpdesk\LaravelTraits\Tests\Models\Order;
 
 class OrderTransformer extends TransformerAbstract
 {
-
-    public $availableIncludes = ["company"];
+    public $availableIncludes = ["company", "products"];
 
     public function transform(Order $order)
     {
@@ -23,6 +22,13 @@ class OrderTransformer extends TransformerAbstract
     {
         return $order->relationLoaded('company')
             ? $this->item($order->company, new CompanyTransformer)
+            : null;
+    }
+
+    public function includeProducts(Order $order)
+    {
+        return $order->relationLoaded('products')
+            ? $this->collection($order->products, new ProductTransformer)
             : null;
     }
 }

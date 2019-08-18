@@ -18,4 +18,9 @@ class Order extends BaseModel
     {
         return $this->belongsTo(Company::class);
     }
+
+    public function products()
+    {
+        return $this->belongsToMany(Product::class);
+    }
 }
