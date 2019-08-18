@@ -3,6 +3,8 @@
 namespace Halpdesk\LaravelTraits\Tests;
 
 use Halpdesk\LaravelTraits\Tests\Models\Company;
+use Halpdesk\LaravelTraits\Tests\Models\Order;
+use Halpdesk\LaravelTraits\Tests\Models\Product;
 use Carbon\Carbon;
 
 class CamelCaseAccessibleTest extends TestCase
@@ -110,5 +112,32 @@ class CamelCaseAccessibleTest extends TestCase
         ]);
 
         $this->assertEquals($company->email, $company->getEmailAttribute($company->email));
+    }
+
+    /**
+     * @group CamelCaseAccessible
+     * @covers Halpdesk\LaravelTraits\Traits\CamelCaseAccessibleTest::fill()
+     * @covers Halpdesk\LaravelTraits\Traits\CamelCaseAccessibleTest::getAttribute()
+     */
+    public function testPivotTable()
+    {
+        $company = factory(Company::class)->create();
+        $order = factory(Order::class)->create([
+            "company_id" => 1,
+        ]);
+        $product = factory(Product::class)->create()->fresh();
+        $order->products()->attach($product);
+        $this->assertDatabaseHas('order_product', [
+            'order_id'   => $order->id,
+            'product_id' => $product->id,
+        ]);
+        $order->refresh()->load("products");
+
+        $expected = array_merge($product->toArray(), ['pivot' => [
+            'order_id'   => $order->id,
+            'product_id' => $product->id,
+        ]]);
+        $actual= $order->products[0]->toArray();
+        $this->assertEquals($expected, $actual);
     }
 }

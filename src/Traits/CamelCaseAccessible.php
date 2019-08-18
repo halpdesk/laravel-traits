@@ -67,7 +67,7 @@ trait CamelCaseAccessible
         $dates = $this->getAllDates();
 
         return array_unique(array_keys_to_snake_case(array_merge(
-            ["id"],
+            ["id", "pivot"],
             $fillable,
             $dates,
             array_keys($casts),
