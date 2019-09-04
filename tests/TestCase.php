@@ -36,7 +36,7 @@ class TestCase extends OrchestraTestCase
         $this->withFactories(static::$dir . '/tests/database/factories');
     }
 
-    public static function setUpBeforeClass()
+    public static function setUpBeforeClass() : void
     {
         static::$dir = realpath(dirname(realpath(__FILE__)).'/../');
         parent::setUpBeforeClass();
